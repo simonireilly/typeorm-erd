@@ -1,0 +1,39 @@
+{
+  "name": "typeorm-erd",
+  "description": "",
+  "version": "1.0.0",
+  "author": "",
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.2",
+    "@types/jest": "^27.5.1",
+    "@types/node": "^17.0.36",
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/parser": "^5.27.0",
+    "eslint": "^8.16.0",
+    "husky": "^7.0.0",
+    "jest": "^28.1.0",
+    "sqlite3": "^5.0.8",
+    "ts-jest": "^28.0.3",
+    "ts-node": "^10.8.0",
+    "typescript": "^4.7.2"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node ./src/index.ts",
+    "build": "tsc --build",
+    "test": "jest",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "fmt": "syncpack format && syncpack fix-mismatches",
+    "prepare": "husky install"
+  },
+  "peerDependencies": {
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.6"
+  },
+  "dependencies": {
+    "typeorm": "^0.3.6"
+  }
+}
