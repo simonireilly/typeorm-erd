@@ -1,0 +1,10 @@
+{
+  "extends": "@tsconfig/node16",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "outDir": "dist",
+    "incremental": true
+  }
+}
