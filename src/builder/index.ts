@@ -1,4 +1,3 @@
-import { AppDataSource } from "../../examples/basic/src/data-source";
 import { DataSource, EntitySchema } from "typeorm";
 import { ConnectionMetadataBuilder } from "typeorm/connection/ConnectionMetadataBuilder";
 
