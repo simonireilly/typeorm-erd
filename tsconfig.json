@@ -5,6 +5,7 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "outDir": "dist",
-    "incremental": true
-  }
+    "incremental": true,
+  },
+  "exclude": ["*.js"]
 }

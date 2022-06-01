@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`building test data returns the meta data 1`] = `
+exports[`builders entity metadata builder returns the meta data 1`] = `
 Array [
   EntityMetadata {
     "@instanceof": Symbol(EntityMetadata),

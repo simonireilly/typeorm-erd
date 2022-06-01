@@ -1,5 +1,6 @@
 import { DataSource, EntityMetadata } from "typeorm";
-import { builders } from "../builder";
+import { RelationMetadata } from "typeorm/metadata/RelationMetadata";
+import { BuilderRelations, builders } from "../builder";
 
 const RelationShips = {
   left: {
@@ -18,45 +19,43 @@ const RelationShips = {
 
 export class Mermaid {
   private meta: EntityMetadata[];
+  private relations: BuilderRelations;
 
   constructor(
     readonly dataSource: DataSource,
-    private builder = builders.entityMetaData
+    private entityBuilder = builders.entityMetaData,
+    private relationBuilder = builders.relations
   ) {
     this.dataSource = dataSource;
-    this.builder = builder;
+    this.entityBuilder = entityBuilder;
   }
 
   public async initialize() {
-    this.meta = await this.builder(this.dataSource);
+    this.meta = await this.entityBuilder(this.dataSource);
+    this.relations = await this.relationBuilder(this.meta);
   }
 
   public render(): string {
-    return `erDiagram\n  ${this.renderTables()} ${this.renderRelations()}`;
+    return `erDiagram\n  ${this.renderTables()}\n${this.renderRelations()}`;
   }
 
-  private renderRelations() {
-    const relations = this.meta.reduce((acc, entity) => {
-      const entityRelations = entity.ownRelations.map(
-        ({ relationType, isOwning, inverseEntityMetadata }) => {
-          const side = isOwning ? "left" : "right";
-          return {
-            source: entity.tableName,
-            relation: RelationShips[side][relationType],
-            target: inverseEntityMetadata.tableName,
-          };
-        }
-      );
+  public renderRelations() {
+    const relations = Object.entries(this.relations).reduce(
+      (acc, [key, values]) => {
+        const relations = values.entityRelations.map((rel) => {
+          if (!rel.propertyPath) return "";
 
-      return {
-        ...acc,
-        [entity.tableName]: {
-          entityRelations,
-        },
-      };
-    }, {});
+          return `${rel.source} ${RelationShips["left"][rel.relationType]}--${
+            RelationShips["right"][rel.relationType]
+          } ${rel.target}: ${rel.propertyPath}`;
+        });
 
-    console.info("relations", relations);
+        return [...acc, ...relations];
+      },
+      [] as string[]
+    );
+
+    return relations.filter(Boolean).join("\n");
   }
 
   private renderTables() {

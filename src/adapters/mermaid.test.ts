@@ -19,6 +19,7 @@ describe("mermaid adapter", () => {
     integer likes
     integer authorId FK The primary user identifier
   }
-  user ||--|{ comment`);
+user ||--|{ comment: comments
+comment }|--|| user: author`);
   });
 });
