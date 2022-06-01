@@ -66,7 +66,7 @@ export class Mermaid {
             this.dataSource.driver.normalizeType(column),
             column.databaseName,
             column.isPrimary ? "PK" : column.referencedColumn ? "FK" : "",
-            column?.comment && `"${column?.comment}"`,
+            column.comment && `"${column.comment}"`,
           ]
             .filter(Boolean)
             .join(" ");
