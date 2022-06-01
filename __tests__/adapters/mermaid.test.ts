@@ -1,6 +1,6 @@
 import { AppDataSource } from "../../examples/basic/src/data-source";
 import { AppDataSource as CartData } from "../../examples/shopping-cart/src/data-source";
-import { Mermaid } from "./mermaid";
+import { Mermaid } from "./../../src/adapters/mermaid";
 
 describe("mermaid adapter", () => {
   describe("integration tests", () => {

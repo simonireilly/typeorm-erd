@@ -22,7 +22,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node ./src/index.ts",
-    "build": "tsc --build",
+    "build": "tsc --p tsconfig.production.json",
     "test": "jest",
     "lint": "eslint",
     "lint:fix": "eslint --fix",

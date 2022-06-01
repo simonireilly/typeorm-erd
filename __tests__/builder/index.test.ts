@@ -1,6 +1,5 @@
 import { AppDataSource } from "../../examples/basic/src/data-source";
-import { AppDataSource as ShoppingCartData } from "../../examples/shopping-cart/src/data-source";
-import { builders } from "./";
+import { builders } from "../../src/builder";
 
 describe("builders", () => {
   describe("entity metadata builder", () => {
