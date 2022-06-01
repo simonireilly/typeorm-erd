@@ -13,6 +13,7 @@ interface RelationData {
   relationType: RelationType;
   propertyPath: string;
   nullable: boolean;
+  isOwning: boolean;
   inverseSidePropertyPath: string;
   source: string;
   target: string;
@@ -39,19 +40,22 @@ const entityMetaData = async (connection: DataSource) => {
 
 /**
  * Return the relation data for each table
+ *
  */
 const relations = (meta: EntityMetadata[]): BuilderRelations => {
-  return meta.reduce((acc, entity) => {
+  const relationData = meta.reduce<BuilderRelations>((acc, entity) => {
     const entityRelations = entity.ownRelations.map(
       ({
         relationType,
         inverseEntityMetadata,
         propertyPath,
         inverseSidePropertyPath,
+        isOwning,
       }) => {
         return {
           relationType,
           propertyPath,
+          isOwning,
           nullable:
             entity.columns.find((c) => c.propertyName === propertyPath)
               ?.isNullable || false,
@@ -69,6 +73,8 @@ const relations = (meta: EntityMetadata[]): BuilderRelations => {
       },
     };
   }, {});
+
+  return relationData;
 };
 
 export const builders = {

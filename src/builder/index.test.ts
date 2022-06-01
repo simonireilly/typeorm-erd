@@ -21,6 +21,7 @@ describe("builders", () => {
             {
               inverseSidePropertyPath: "",
               nullable: true,
+              isOwning: true,
               propertyPath: "author",
               relationType: "many-to-one",
               source: "comment",
@@ -33,6 +34,7 @@ describe("builders", () => {
             {
               inverseSidePropertyPath: "author",
               nullable: false,
+              isOwning: false,
               propertyPath: "comments",
               relationType: "one-to-many",
               source: "user",

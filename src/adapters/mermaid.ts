@@ -36,26 +36,26 @@ export class Mermaid {
   }
 
   public render(): string {
-    return `erDiagram\n  ${this.renderTables()}\n${this.renderRelations()}`;
+    return `erDiagram\n  ${this.renderTables()}\n  ${this.renderRelations()}`;
   }
 
   public renderRelations() {
-    const relations = Object.entries(this.relations).reduce(
-      (acc, [key, values]) => {
-        const relations = values.entityRelations.map((rel) => {
-          if (!rel.propertyPath) return "";
+    return this.buildRelations().join("\n  ");
+  }
 
-          return `${rel.source} ${RelationShips["left"][rel.relationType]}--${
-            RelationShips["right"][rel.relationType]
-          } ${rel.target}: ${rel.propertyPath}`;
-        });
+  public buildRelations() {
+    return Object.entries(this.relations).reduce((acc, [key, values]) => {
+      const relations = values.entityRelations.map((rel) => {
+        // Remove unnamed relations and only add relations for the explicit owner
+        if (!rel.propertyPath || !rel.isOwning) return "";
 
-        return [...acc, ...relations];
-      },
-      [] as string[]
-    );
+        return `${rel.source} ${RelationShips["left"][rel.relationType]}--${
+          RelationShips["right"][rel.relationType]
+        } ${rel.target}: ${rel.propertyPath}`;
+      });
 
-    return relations.filter(Boolean).join("\n");
+      return [...acc, ...relations.filter(Boolean)];
+    }, [] as string[]);
   }
 
   private renderTables() {
@@ -66,7 +66,7 @@ export class Mermaid {
             this.dataSource.driver.normalizeType(column),
             column.databaseName,
             column.isPrimary ? "PK" : column.referencedColumn ? "FK" : "",
-            column?.comment,
+            column?.comment && `"${column?.comment}"`,
           ]
             .filter(Boolean)
             .join(" ");
