@@ -52,13 +52,16 @@ const relations = (meta: EntityMetadata[]): BuilderRelations => {
         inverseSidePropertyPath,
         isOwning,
       }) => {
+        const column = entity.columns.find(
+          (c) => c.propertyName === propertyPath
+        );
+        const nullable = column ? column.isNullable : false;
+
         return {
           relationType,
           propertyPath,
           isOwning,
-          nullable:
-            entity.columns.find((c) => c.propertyName === propertyPath)
-              ?.isNullable || false,
+          nullable,
           inverseSidePropertyPath,
           source: entity.tableName,
           target: inverseEntityMetadata.tableName,
