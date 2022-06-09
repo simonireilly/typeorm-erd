@@ -12,9 +12,19 @@
 
 Currently programmatic usage is the only supported usage method:
 
+Create a new project with typeorm if you haven't got one
+
 ```bash
-yarn add typeorm-erd
+npx typeorm init --name basic --database postgres
 ```
+
+Add the package as a dev dependency:
+
+```bash
+yarn add --dev typeorm-erd
+```
+
+Render the ERD from your local machine:
 
 ```ts
 // src/data-source.ts
