@@ -52,7 +52,6 @@ erDiagram
 ## TODO
 
 - [ ] When relation is nullable use `o{` relation to show zero or more
-- [ ] Publish to NPM to allow usage in other modules
 
 ## Shoulders
 
