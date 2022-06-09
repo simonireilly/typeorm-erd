@@ -12,13 +12,23 @@
 
 Currently programmatic usage is the only supported usage method:
 
-```ts
-import { MermaidErd } from "./src/adapters/mermaid";
-import { AppDataSource as BasicDataSource } from "./examples/join-tables/src/data-source";
+```bash
+yarn add typeorm-erd
+```
 
-const basic = new MermaidErd(BasicDataSource);
-await basic.initialize();
-const basicMermaidErd = basic.render();
+```ts
+// src/data-source.ts
+import { MermaidErd } from "typeorm-erd";
+
+const main = async () => {
+  const erd = new MermaidErd(AppDataSource);
+  await erd.initialize();
+  const erdText = await erd.render();
+
+  console.info(erdText);
+};
+
+main();
 ```
 
 ### Output
