@@ -16,7 +16,7 @@ erDiagram
   }
   comment }|--|| user: author
 ```
-
+  
 ## Join Table
 
 ```mermaid
@@ -34,6 +34,7 @@ erDiagram
   tag ||--|{ product_tag: products
   product ||--|{ product_tag: tags
 ```
+
 
 ## Carts
 
