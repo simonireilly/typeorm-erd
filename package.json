@@ -1,7 +1,7 @@
 {
   "name": "typeorm-erd",
   "description": "",
-  "version": "0.0.1-beta.3",
+  "version": "0.0.2",
   "author": "Simon Reilly",
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
