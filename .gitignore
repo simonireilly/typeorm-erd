@@ -5,3 +5,7 @@ build/
 tmp/
 temp/
 dist/
+*.tsbuildinfo
+*.log
+*.js
+*.tgz
