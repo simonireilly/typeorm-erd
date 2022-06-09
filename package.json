@@ -1,7 +1,7 @@
 {
   "name": "typeorm-erd",
   "description": "",
-  "version": "0.0.1-beta.2",
+  "version": "0.0.1-beta.3",
   "author": "Simon Reilly",
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
@@ -37,6 +37,7 @@
     "typeorm": "^0.3.6"
   },
   "scripts": {
+    "beta": "yarn version --prerelease --preid=beta",
     "build": "tsc --p tsconfig.production.json",
     "dev": "ts-node ./src/index.ts",
     "examples": "ts-node ./examples.ts",
