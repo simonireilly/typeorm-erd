@@ -1,5 +1,6 @@
 import { DataSource, EntityMetadata, EntitySchema } from "typeorm";
 import { ConnectionMetadataBuilder } from "typeorm/connection/ConnectionMetadataBuilder";
+import { RelationMetadata } from "typeorm/metadata/RelationMetadata";
 import { RelationType } from "typeorm/metadata/types/RelationTypes";
 
 export type BuilderRelations = Record<
@@ -43,31 +44,42 @@ const entityMetaData = async (connection: DataSource) => {
  *
  */
 const relations = (meta: EntityMetadata[]): BuilderRelations => {
-  const relationData = meta.reduce<BuilderRelations>((acc, entity) => {
-    const entityRelations = entity.ownRelations.map(
-      ({
-        relationType,
-        inverseEntityMetadata,
-        propertyPath,
-        inverseSidePropertyPath,
-        isOwning,
-      }) => {
-        const column = entity.columns.find(
-          (c) => c.propertyName === propertyPath
-        );
-        const nullable = column ? column.isNullable : false;
+  const handleRelation = (
+    entity: EntityMetadata,
+    {
+      relationType,
+      inverseEntityMetadata,
+      propertyPath,
+      inverseSidePropertyPath,
+      isOwning,
+      joinTableName,
+    }: RelationMetadata
+  ) => {
+    const column = entity.columns.find((c) => c.propertyName === propertyPath);
+    const nullable = column ? column.isNullable : false;
 
-        return {
-          relationType,
-          propertyPath,
-          isOwning,
-          nullable,
-          inverseSidePropertyPath,
-          source: entity.tableName,
-          target: inverseEntityMetadata.tableName,
-        };
-      }
-    );
+    return {
+      relationType,
+      propertyPath,
+      isOwning,
+      nullable,
+      inverseSidePropertyPath,
+      source: entity.tableName,
+      target: inverseEntityMetadata.tableName,
+    };
+  };
+
+  const relationData = meta.reduce<BuilderRelations>((acc, entity) => {
+    const entityRelations = entity.relations.map((rel) => {
+      // if (rel.junctionEntityMetadata) {
+
+      //   return handleRelation(
+      //     rel.junctionEntityMetadata,
+      //     rel.junctionEntityMetadata.relations
+      //   );
+      // }
+      return handleRelation(entity, rel);
+    });
 
     return {
       ...acc,

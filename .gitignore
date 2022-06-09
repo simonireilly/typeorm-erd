@@ -7,3 +7,4 @@ temp/
 dist/
 *.tsbuildinfo
 *.log
+*.js
