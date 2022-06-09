@@ -89,7 +89,10 @@ const handleRelation = (
 
   let target = inverseEntityMetadata.tableName;
   let derivedRelationType = relationType;
-  let derivedJoinTable = inverseRelation?.joinTableName || joinTableName;
+  let derivedJoinTable =
+    inverseRelation && inverseRelation.joinTableName
+      ? inverseRelation.joinTableName
+      : joinTableName;
   let derivedOwnership = isOwning;
 
   if (derivedJoinTable) {
