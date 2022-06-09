@@ -1,5 +1,4 @@
 import { DataSource, EntityMetadata } from "typeorm";
-import { RelationMetadata } from "typeorm/metadata/RelationMetadata";
 import { BuilderRelations, builders } from "../builder";
 
 const RelationShips = {
@@ -17,7 +16,7 @@ const RelationShips = {
   },
 };
 
-export class Mermaid {
+export class MermaidErd {
   private meta: EntityMetadata[];
   private relations: BuilderRelations;
 

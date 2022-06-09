@@ -1,24 +1,44 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+## Basic
 
-exports[`mermaid adapter integration tests renders the complete basic tables 1`] = `
-"erDiagram
+```mermaid
+erDiagram
   user {
-    integer id PK \\"The primary user identifier\\"
+    integer id PK "The primary user identifier"
     varchar firstName
     varchar lastName
     integer age
   }
   comment {
-    integer id PK \\"The ID for the comment\\"
+    integer id PK "The ID for the comment"
     varchar text
     integer likes
-    integer authorId FK \\"The primary user identifier\\"
+    integer authorId FK "The primary user identifier"
   }
-  comment }|--|| user: author"
-`;
+  comment }|--|| user: author
+```
 
-exports[`mermaid adapter integration tests renders the complete cart tables 1`] = `
-"erDiagram
+## Join Table
+
+```mermaid
+erDiagram
+  tag {
+    bigint id PK
+  }
+  product {
+    bigint id PK
+  }
+  product_tag {
+    bigint productId PK
+    bigint tagId PK
+  }
+  tag ||--|{ product_tag: products
+  product ||--|{ product_tag: tags
+```
+
+## Carts
+
+```mermaid
+erDiagram
   cart_item {
     bigint id PK
     bigint productId FK
@@ -196,5 +216,5 @@ exports[`mermaid adapter integration tests renders the complete cart tables 1`] 
   transaction }|--|| order: order
   transaction }|--|| user: user
   order }|--|| user: user
-  cart }|--|| user: user"
-`;
+  cart }|--|| user: user
+```

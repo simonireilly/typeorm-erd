@@ -18,6 +18,7 @@ interface RelationData {
   inverseSidePropertyPath: string;
   source: string;
   target: string;
+  joinTableName: string;
 }
 
 const entityMetaData = async (connection: DataSource) => {
@@ -44,42 +45,10 @@ const entityMetaData = async (connection: DataSource) => {
  *
  */
 const relations = (meta: EntityMetadata[]): BuilderRelations => {
-  const handleRelation = (
-    entity: EntityMetadata,
-    {
-      relationType,
-      inverseEntityMetadata,
-      propertyPath,
-      inverseSidePropertyPath,
-      isOwning,
-      joinTableName,
-    }: RelationMetadata
-  ) => {
-    const column = entity.columns.find((c) => c.propertyName === propertyPath);
-    const nullable = column ? column.isNullable : false;
-
-    return {
-      relationType,
-      propertyPath,
-      isOwning,
-      nullable,
-      inverseSidePropertyPath,
-      source: entity.tableName,
-      target: inverseEntityMetadata.tableName,
-    };
-  };
-
   const relationData = meta.reduce<BuilderRelations>((acc, entity) => {
-    const entityRelations = entity.relations.map((rel) => {
-      // if (rel.junctionEntityMetadata) {
-
-      //   return handleRelation(
-      //     rel.junctionEntityMetadata,
-      //     rel.junctionEntityMetadata.relations
-      //   );
-      // }
-      return handleRelation(entity, rel);
-    });
+    const entityRelations = entity.relations.map((rel) =>
+      handleRelation(entity, rel)
+    );
 
     return {
       ...acc,
@@ -95,4 +64,48 @@ const relations = (meta: EntityMetadata[]): BuilderRelations => {
 export const builders = {
   entityMetaData,
   relations,
+};
+
+// Private
+
+/**
+ * Resolve entity relationships to a normalised entity to entity relation even
+ * when there are join tables
+ */
+const handleRelation = (
+  entity: EntityMetadata,
+  {
+    relationType,
+    inverseEntityMetadata,
+    propertyPath,
+    inverseSidePropertyPath,
+    isOwning,
+    joinTableName,
+    inverseRelation,
+  }: RelationMetadata
+) => {
+  const column = entity.columns.find((c) => c.propertyName === propertyPath);
+  const nullable = column ? column.isNullable : false;
+
+  let target = inverseEntityMetadata.tableName;
+  let derivedRelationType = relationType;
+  let derivedJoinTable = inverseRelation?.joinTableName || joinTableName;
+  let derivedOwnership = isOwning;
+
+  if (derivedJoinTable) {
+    target = derivedJoinTable;
+    derivedRelationType = "one-to-many";
+    derivedOwnership = true;
+  }
+
+  return {
+    relationType: derivedRelationType,
+    propertyPath,
+    isOwning: derivedOwnership,
+    nullable,
+    inverseSidePropertyPath,
+    source: entity.tableName,
+    joinTableName: derivedJoinTable,
+    target,
+  };
 };
