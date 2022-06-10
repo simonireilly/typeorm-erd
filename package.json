@@ -1,7 +1,7 @@
 {
   "name": "typeorm-erd",
   "description": "Create ERD from TypeORM with outputs as Mermaid, or PlantUML",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Simon Reilly",
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
