@@ -28,6 +28,7 @@ ${PLANTUML_TEMPLATE(plantumlErd)}
 `;
 
   writeFileSync(`./examples.md`, template);
+  writeFileSync(`./example.mermaid`, mermaidErd);
 };
 
 main();
