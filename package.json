@@ -1,7 +1,7 @@
 {
   "name": "typeorm-erd",
-  "description": "",
-  "version": "0.0.2",
+  "description": "Create ERD from TypeORM with outputs as Mermaid, or PlantUML",
+  "version": "0.0.3",
   "author": "Simon Reilly",
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
@@ -9,6 +9,7 @@
     "@types/node": "^17.0.36",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
+    "embedme": "^1.22.0",
     "eslint": "^8.16.0",
     "husky": "^7.0.0",
     "jest": "^28.1.0",
@@ -36,12 +37,13 @@
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.6"
   },
+  "repository": "simonireilly/typeorm-erd",
   "scripts": {
     "beta": "yarn version --prerelease --preid=beta",
     "build": "tsc --p tsconfig.production.json",
     "dev": "ts-node ./src/index.ts",
     "examples": "ts-node ./examples.ts",
-    "fmt": "syncpack format && syncpack fix-mismatches",
+    "fmt": "syncpack format && syncpack fix-mismatches && embedme ./README.md",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "prepare": "husky install",
