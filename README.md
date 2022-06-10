@@ -1,5 +1,7 @@
 # TypeORM ERD
 
+[![NPM Version](https://img.shields.io/npm/v/typeorm-erd.svg?style=for-the-badge&labelColor=000000)](https://www.npmjs.com/package/typeorm-erd)
+
 Generating ERD for TypeORM data sources in Mermaid JS or PlantUML
 
 - [TypeORM ERD](#typeorm-erd)
