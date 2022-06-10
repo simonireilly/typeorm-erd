@@ -17,10 +17,10 @@ const RelationShips = {
 };
 
 /**
- * Render a mermaid ERD based on the spec here:
- * https://mermaid-js.github.io/mermaid/#/entityRelationshipDiagram
+ * Render a plantuml string based on the specification here:
+ * https://plantuml.com/ie-diagram
  */
-export class MermaidErd {
+export class PlantUMLErd {
   private meta: EntityMetadata[];
   private relations: BuilderRelations;
 
@@ -39,11 +39,11 @@ export class MermaidErd {
   }
 
   public render(): string {
-    return `erDiagram\n  ${this.renderTables()}\n  ${this.renderRelations()}`;
+    return `@startuml\nskinparam linetype ortho\n${this.renderTables()}\n${this.renderRelations()}\n@enduml`;
   }
 
   public renderRelations() {
-    return this.buildRelations().join("\n  ");
+    return this.buildRelations().join("\n");
   }
 
   public buildRelations() {
@@ -54,7 +54,7 @@ export class MermaidErd {
 
         return `${rel.source} ${RelationShips["left"][rel.relationType]}--${
           RelationShips["right"][rel.relationType]
-        } ${rel.target}: ${rel.propertyPath}`;
+        } ${rel.target}`;
       });
 
       return [...acc, ...relations.filter(Boolean)];
@@ -65,18 +65,30 @@ export class MermaidErd {
     return this.meta
       .map((entry) => {
         const columns = entry.columns.map((column) => {
+          const { databaseName, isPrimary, referencedColumn, comment, length } =
+            column;
+
+          const normalizedColumnName = this.dataSource.driver
+            .normalizeType(column)
+            .toUpperCase();
+          const columnName = length
+            ? `${normalizedColumnName}(${length})`
+            : normalizedColumnName;
+
           return [
-            this.dataSource.driver.normalizeType(column),
-            column.databaseName,
-            column.isPrimary ? "PK" : column.referencedColumn ? "FK" : "",
-            column.comment && `"${column.comment}"`,
+            databaseName,
+            columnName,
+            isPrimary ? "<<PK>>" : referencedColumn ? "<<FK>>" : "",
+            comment && `//"${comment}"//`,
           ]
             .filter(Boolean)
-            .join(" ");
+            .join(" : ");
         });
 
-        return `${entry.tableName} {\n    ${columns.join("\n    ")}\n  }`;
+        return `entity "${entry.tableName}" {\n    ${columns.join(
+          "\n    --\n    "
+        )}\n}`;
       })
-      .join("\n  ");
+      .join("\n");
   }
 }

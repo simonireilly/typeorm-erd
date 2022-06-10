@@ -1,193 +1,34 @@
-## Mermaid
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-```mermaid
-erDiagram
-  cart_item {
-    bigint id PK
-    bigint productId FK
-    bigint cartId FK
-    varchar sku
-    float price
-    float discount
-    smallint quantity
-    tinyint active
-    datetime createdAt
-    datetime updatedAt
-    text content
-  }
-  category {
-    bigint id PK
-    bigint parentId FK
-    varchar title
-    varchar metaTitle
-    varchar slug
-    text content
-  }
-  product_meta {
-    bigint id PK
-    bigint productId FK
-    varchar key
-    text content
-  }
-  product_review {
-    bigint id PK
-    bigint productId FK
-    bigint parentId FK
-    varchar title
-    smallint rating
-    tinyint published
-    datetime createdAt
-    datetime publishedAt
-    text content
-  }
-  tag {
-    bigint id PK
-    varchar title
-    varchar metaTitle
-    varchar slug
-    text content
-  }
-  product {
-    bigint id PK
-    bigint userId FK
-    varchar title
-    varchar metaTitle
-    varchar slug
-    tinytext summary
-    smallint type
-    varchar sku
-    float price
-    float discount
-    smallint quantity
-    tinyint shop
-    datetime createdAt
-    datetime updatedAt
-    datetime publishedAt
-    datetime startsAt
-    datetime endsAt
-    text content
-  }
-  order_item {
-    bigint id PK
-    bigint productId FK
-    bigint orderId FK
-    varchar sku
-    float price
-    float discount
-    smallint quantity
-    datetime createdAt
-    datetime updatedAt
-    text content
-  }
-  transaction {
-    bigint id PK
-    bigint userId FK
-    bigint orderId FK
-    varchar code
-    smallint type
-    smallint mode
-    smallint status
-    datetime createdAt
-    datetime updatedAt
-    text content
-  }
-  order {
-    bigint id PK
-    bigint userId FK
-    varchar sessionId
-    varchar token
-    smallint status
-    float subTotal
-    float itemDiscount
-    float tax
-    float shipping
-    float total
-    varchar promo
-    float discount
-    float grandTotal
-    varchar firstName
-    varchar middleName
-    varchar lastName
-    varchar mobile
-    varchar email
-    varchar line1
-    varchar line2
-    varchar city
-    varchar province
-    varchar country
-    datetime createdAt
-    datetime updatedAt
-    text content
-  }
-  user {
-    bigint id PK
-    enum role
-    varchar firstName
-    varchar middleName
-    varchar lastName
-    varchar mobile
-    varchar email
-    varchar passwordHash
-    tinyint admin
-    tinyint vendor
-    datetime registeredAt
-    datetime lastLogin
-    tinytext intro
-    text profile
-  }
-  cart {
-    bigint id PK
-    bigint userId FK
-    varchar sessionId
-    varchar token
-    smallint status
-    varchar firstName
-    varchar middleName
-    varchar lastName
-    varchar mobile
-    varchar email
-    varchar line1
-    varchar line2
-    varchar city
-    varchar province
-    varchar country
-    datetime createdAt
-    datetime updatedAt
-    text content
-  }
-  product_category {
-    bigint categoryId PK
-    bigint productId PK
-  }
-  product_tag {
-    bigint productId PK
-    bigint tagId PK
-  }
-  cart_item }|--|| cart: cart
-  cart_item }|--|| product: product
-  category }|--|| category: parent
-  category ||--|{ product_category: products
-  product_meta }|--|| product: product
-  product_review }|--|| product_review: parent
-  product_review }|--|| product: product
-  tag ||--|{ product_tag: products
-  product }|--|| user: user
-  product ||--|{ product_category: categories
-  product ||--|{ product_tag: tags
-  order_item }|--|| order: order
-  order_item }|--|| product: product
-  transaction }|--|| order: order
-  transaction }|--|| user: user
-  order }|--|| user: user
-  cart }|--|| user: user
-```
-
-## Plantuml
-
-```plantuml
-@startuml
+exports[`mermaid adapter integration tests renders the complete basic tables 1`] = `
+"@startuml
 skinparam linetype ortho
-entity "cart_item" {
+entity \\"user\\" {
+    id : INTEGER : <<PK>> : //\\"The primary user identifier\\"//
+    --
+    firstName : VARCHAR
+    --
+    lastName : VARCHAR
+    --
+    age : INTEGER
+}
+entity \\"comment\\" {
+    id : INTEGER : <<PK>> : //\\"The ID for the comment\\"//
+    --
+    text : VARCHAR(300)
+    --
+    likes : INTEGER
+    --
+    authorId : INTEGER : <<FK>> : //\\"The primary user identifier\\"//
+}
+comment }|--|| user
+@enduml"
+`;
+
+exports[`mermaid adapter integration tests renders the complete cart tables 1`] = `
+"@startuml
+skinparam linetype ortho
+entity \\"cart_item\\" {
     id : BIGINT : <<PK>>
     --
     productId : BIGINT : <<FK>>
@@ -210,7 +51,7 @@ entity "cart_item" {
     --
     content : TEXT
 }
-entity "category" {
+entity \\"category\\" {
     id : BIGINT : <<PK>>
     --
     parentId : BIGINT : <<FK>>
@@ -223,7 +64,7 @@ entity "category" {
     --
     content : TEXT
 }
-entity "product_meta" {
+entity \\"product_meta\\" {
     id : BIGINT : <<PK>>
     --
     productId : BIGINT : <<FK>>
@@ -232,7 +73,7 @@ entity "product_meta" {
     --
     content : TEXT
 }
-entity "product_review" {
+entity \\"product_review\\" {
     id : BIGINT : <<PK>>
     --
     productId : BIGINT : <<FK>>
@@ -251,7 +92,7 @@ entity "product_review" {
     --
     content : TEXT
 }
-entity "tag" {
+entity \\"tag\\" {
     id : BIGINT : <<PK>>
     --
     title : VARCHAR(75)
@@ -262,7 +103,7 @@ entity "tag" {
     --
     content : TEXT
 }
-entity "product" {
+entity \\"product\\" {
     id : BIGINT : <<PK>>
     --
     userId : BIGINT : <<FK>>
@@ -299,7 +140,7 @@ entity "product" {
     --
     content : TEXT
 }
-entity "order_item" {
+entity \\"order_item\\" {
     id : BIGINT : <<PK>>
     --
     productId : BIGINT : <<FK>>
@@ -320,7 +161,7 @@ entity "order_item" {
     --
     content : TEXT
 }
-entity "transaction" {
+entity \\"transaction\\" {
     id : BIGINT : <<PK>>
     --
     userId : BIGINT : <<FK>>
@@ -341,7 +182,7 @@ entity "transaction" {
     --
     content : TEXT
 }
-entity "order" {
+entity \\"order\\" {
     id : BIGINT : <<PK>>
     --
     userId : BIGINT : <<FK>>
@@ -394,7 +235,7 @@ entity "order" {
     --
     content : TEXT
 }
-entity "user" {
+entity \\"user\\" {
     id : BIGINT : <<PK>>
     --
     role : ENUM
@@ -423,7 +264,7 @@ entity "user" {
     --
     profile : TEXT
 }
-entity "cart" {
+entity \\"cart\\" {
     id : BIGINT : <<PK>>
     --
     userId : BIGINT : <<FK>>
@@ -460,12 +301,12 @@ entity "cart" {
     --
     content : TEXT
 }
-entity "product_category" {
+entity \\"product_category\\" {
     categoryId : BIGINT : <<PK>>
     --
     productId : BIGINT : <<PK>>
 }
-entity "product_tag" {
+entity \\"product_tag\\" {
     productId : BIGINT : <<PK>>
     --
     tagId : BIGINT : <<PK>>
@@ -487,5 +328,5 @@ transaction }|--|| order
 transaction }|--|| user
 order }|--|| user
 cart }|--|| user
-@enduml
-```
+@enduml"
+`;

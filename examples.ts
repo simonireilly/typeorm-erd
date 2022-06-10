@@ -1,37 +1,30 @@
 import { writeFileSync } from "fs";
-import { AppDataSource as BasicDataSource } from "./examples/basic/src/data-source";
-import { AppDataSource as CartDataSource } from "./examples/shopping-cart/src/data-source";
-import { AppDataSource as JoinTableDataSource } from "./examples/join-tables/src/data-source";
-import { MermaidErd } from "./src/adapters/mermaid";
+import { AppDataSource } from "./examples/shopping-cart/src/data-source";
+import { ERDBuilder } from "./src";
 
 const CODE_BLOCK = "```";
-const TEMPLATE = (erd: string) => `${CODE_BLOCK}mermaid\n${erd}\n${CODE_BLOCK}`;
+const MERMAID_TEMPLATE = (erd: string) =>
+  `${CODE_BLOCK}mermaid\n${erd}\n${CODE_BLOCK}`;
+const PLANTUML_TEMPLATE = (erd: string) =>
+  `${CODE_BLOCK}plantuml\n${erd}\n${CODE_BLOCK}`;
 
 const main = async () => {
-  const carts = new MermaidErd(CartDataSource);
-  await carts.initialize();
-  const cartsMermaidErd = carts.render();
+  const mermaid = new ERDBuilder("mermaid", AppDataSource);
+  await mermaid.initialize();
+  const mermaidErd = mermaid.render();
 
-  const basic = new MermaidErd(BasicDataSource);
-  await basic.initialize();
-  const basicMermaidErd = basic.render();
+  const plantuml = new ERDBuilder("plantuml", AppDataSource);
+  await plantuml.initialize();
+  const plantumlErd = plantuml.render();
 
-  const joinTable = new MermaidErd(JoinTableDataSource);
-  await joinTable.initialize();
-  const joinTableMermaidErd = joinTable.render();
+  const template = `## Mermaid
 
-  const template = `## Basic
-
-${TEMPLATE(basicMermaidErd)}
+${MERMAID_TEMPLATE(mermaidErd)}
   
-## Join Table
+## Plantuml
 
-${TEMPLATE(joinTableMermaidErd)}
+${PLANTUML_TEMPLATE(plantumlErd)}
 
-
-## Carts
-
-${TEMPLATE(cartsMermaidErd)}
 `;
 
   writeFileSync(`./examples.md`, template);
