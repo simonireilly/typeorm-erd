@@ -181,7 +181,7 @@ erDiagram
   order }|--|| user: user
   cart }|--|| user: user
 ```
-  
+
 ## Plantuml
 
 ```plantuml
@@ -489,4 +489,3 @@ order }|--|| user
 cart }|--|| user
 @enduml
 ```
-
