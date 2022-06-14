@@ -3,6 +3,7 @@
   "description": "Create ERD from TypeORM with outputs as Mermaid, or PlantUML",
   "version": "0.0.4",
   "author": "Simon Reilly",
+  "bin": "./dist/bin.js",
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
     "@types/jest": "^27.5.1",
@@ -24,7 +25,6 @@
   "files": [
     "dist/"
   ],
-  "bin": "./dist/bin.js",
   "keywords": [
     "entity relationship diagram",
     "erd",
